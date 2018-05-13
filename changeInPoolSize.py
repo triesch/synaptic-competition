@@ -56,7 +56,7 @@ for t in range(0, steps-1):
 
     if t==round(change_time/ts): # change pool size after some time
        pu[t]=2.0*P # double number of receptors in the pool
-       pd[t]=0.0*P # halve number of receptors in the pool
+       pd[t]=0.0*P # set number of receptors in the pool to zero
 
     Wu = sum(wu[:,t])
     Wd = sum(wd[:,t])
