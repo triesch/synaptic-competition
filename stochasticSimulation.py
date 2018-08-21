@@ -505,7 +505,7 @@ f.savefig("plot_wi_Fig8AB.pdf", bbox_inches='tight')
 ######## plot CV ##################################
 ###################################################
 
-# this is a exemplary plot with one measurement of CV
+# this is an exemplary plot with one measurement of CV
 # in file coefficientOfVariation.py you can find a plot that combines different CV's of multiple simulations into one figure
 
 # extract the information from txt files
