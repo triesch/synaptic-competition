@@ -17,4 +17,5 @@ Fig. 6: LTP.py
 
 Fig. 7: slowTimescale.py
 
-Fig. 8: ...
+Fig. 8A,B: stochasticSimulation.py
+Fig. 8C,D: coefficientOfVariation.py
