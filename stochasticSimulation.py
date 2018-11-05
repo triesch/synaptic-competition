@@ -262,16 +262,18 @@ reactions_stoch(all_reactions)
 
 s_i = np.array([1,2,5,10,20,50,100]) # set number of slots
 e_i = deepcopy(s_i)
+w_i = deepcopy(s_i)
 s = np.sum(s_i)
 
-F = 0.3 # set F for calculating alpha
+F = 0.5 # set F to calculate alpha and gamma
+phi = 1.0 # set phi to calculate alpha and gamma
+
 beta = 60/43 # set beta
-alpha = beta/(2.67*s*(1-0.7)) # set alpha
+alpha = beta/(phi*s*(1-F)) # set alpha
 delta = 1/14 # set delta
-gamma = delta*(s*1.0-(beta/alpha)) # set gamma
+gamma = delta*(s*phi-(beta/alpha)) # set gamma
 
 p = round(gamma/delta) # set p
-W = p/1.0 # set number of receptor-slot-complexes in the beginning
 
 tmax = 15 # set the end time 
 n_max = 10000 # estimate n_max for later arrays
@@ -284,13 +286,11 @@ rates = np.append(rates,delta)
 rates = np.append(rates,gamma)
 
 # prepare initial number of molecules of each species according to filling fraction
-init1 = (((e_i/s)*W)//1).astype(np.int64)
-e_i -= init1
-init1 = np.append(init1,e_i)
-init1 = np.append(init1,p)
-number_synapses = int((len(init1)-1)/2)
+w_i = np.round(w_i*F).astype(np.int64)
+e_i -= w_i
+init1 = np.append(np.append(w_i,e_i),p).astype(np.int64)
 
-# check the result for filling fraction and CV
+# initialise CV array
 cv = np.zeros(len(s_i))
 
 counter_simulation = 0
@@ -321,10 +321,10 @@ while True:
         time_data.write(str(i)+"\n")
     time_data.close()
 
-# calculate the average of F and CV of all simulations
+# calculate the average of CV of all simulations
 cv /= times_sim_av
 
-# store CV and F in txt file
+# store CV in txt file
 cv_data = open("cv","a+")
 for i in cv:
     cv_data.write(str(i)+"\n")
@@ -381,7 +381,7 @@ f.savefig("plot_wi_Fig8AB.pdf", bbox_inches='tight')
 ######## plot CV ##################################
 ###################################################
 
-# this is a exemplary plot with one measurement of CV
+# this is an exemplary plot with one measurement of CV
 # in file coefficientOfVariation.py you can find a plot that combines different CV's of multiple simulations into one figure
 
 # extract the information from txt files
